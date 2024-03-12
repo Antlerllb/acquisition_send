@@ -27,10 +27,10 @@ def tokenize_function(example):     # 只截断，因为SFTTrainer有参数可�
     essay1 = tokenizer(example['text1'], max_length=per_essay_max_len, return_tensors='pt')
     essay2 = tokenizer(example['text2'], max_length=per_essay_max_len, return_tensors='pt')
 
-    # 截断后的token索引
+    # 截断后的最后一个token的索引
     trunc_token_index = per_essay_max_len - 1
 
-    # 截断后的char索引
+    # 截断后的最后一个char的索引
     essay1_trunc_char_indices = [essay1.token_to_chars(i, trunc_token_index).end for i in range(map_batch_size)]
     essay2_trunc_char_indices = [essay2.token_to_chars(i, trunc_token_index).end for i in range(map_batch_size)]
 
@@ -45,3 +45,6 @@ def tokenize_function(example):     # 只截断，因为SFTTrainer有参数可�
 
 ds = ds.map(tokenize_function, remove_columns=ds.column_names['train'], batched=True)
 ds['train'].to_pandas().to_csv('trunc_df.csv')
+
+# 备注：为什么不用tokenizer.decode()
+# 因为decode会带一些special_tokens，在bert中是[SEP]等，在llama是<s>等
