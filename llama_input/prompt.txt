@@ -1,0 +1,9 @@
+Instruction: Examine the two articles provided, both authored by the same writer. Your task is to identify which of the two articles was authored earlier based on their content.
+
+Input:
+Essay1: {essay1}
+Essay2: {essay2}
+
+Response: Indicate which article you believe was written earlier based on their content.
+
+Answer: The first essay is authored {label} than the second one.
